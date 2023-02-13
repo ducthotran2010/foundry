@@ -297,7 +297,11 @@ impl<'a> ContractRunner<'a> {
         }
 
         if has_invariants {
-            let identified_contracts = load_contracts(setup.traces.clone(), known_contracts);
+            let mut identified_contracts = load_contracts(setup.traces.clone(), known_contracts);
+            use std::str::FromStr;
+            let cheated_addr = Address::from_str("0x2F8f367095F2415776Dec9d7dBAE7ebc73FA0B4b").unwrap();
+            let res = identified_contracts.get(&Address::from_str("0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f").unwrap()).unwrap();
+            identified_contracts.insert(cheated_addr, res.clone());
             let functions: Vec<&Function> = self
                 .contract
                 .functions()
